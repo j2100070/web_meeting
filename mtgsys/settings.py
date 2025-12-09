@@ -47,7 +47,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'source.log_admin.LogAdminAccessMiddleware',
 ]
 
 # セッションエンジンをデータベースに設定
