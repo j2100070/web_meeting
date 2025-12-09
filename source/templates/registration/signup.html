@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Signup - TerakoyaOnline{% endblock %}
+
+{% block main %}
+    <div class="main-container">
+        <form method="post" class="authorize-form">
+            {% csrf_token %}
+            <div class="form-title">サインアップ</div> 
+                <div class="form-container v-hide-scroll">
+                    {{ form.as_p }}
+                </div> 
+                <div class="form-action">
+                    <button type="submit" class="join-btn">サインアップ</button>
+                </div>
+                <p style="white-space: nowrap;">すでにアカウントを持っていますか？ <a href="{% url 'login' %}"  style="color: blue;">ログイン</a></p>
+        </form>
+    </div>
+{% endblock %}

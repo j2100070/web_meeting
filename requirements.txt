@@ -1,0 +1,13 @@
+asgiref==3.8.1
+Django==4.2.16
+sqlparse==0.5.2
+typing_extensions==4.12.2
+python-decouple==3.8
+requests==2.32.3
+gunicorn==20.1.0
+celery==5.3.4
+redis==5.2.1
+django-celery-beat==2.7.0
+django-celery-results
+mysqlclient==2.2.7
+django-debug-toolbar

@@ -1,0 +1,106 @@
+services:
+  db:
+    container_name: mysql
+    build:
+      context: .
+      dockerfile: containers/mysql/Dockerfile
+    platform: linux/x86_64
+    volumes:
+      - db_data:/var/lib/mysql
+    # コンテナ内の環境変数を.env.prodを使って設定
+    env_file:
+      - .env.prod
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u$$MYSQL_USER -p$$MYSQL_PASSWORD
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    network_mode: "host"
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: containers/django/Dockerfile
+      network: host
+    volumes:
+      - .:/code
+      - ./source/static:/static
+    # 8000番ポートをNginx側が接続できるよう開く
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+    tty: true
+    command: sh -c "/code/entrypoint.sh"
+    # コンテナ内の環境変数を.env.prodを使って設定
+    env_file:
+      - .env.prod
+    depends_on:
+      redis:
+          condition: service_healthy
+      db:
+          condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "exit 0"]
+      interval: 30s
+      timeout: 30s
+      retries: 1
+      start_period: 20s       
+    network_mode: "host"
+  celery_worker:
+    container_name: celery_worker
+    tty: true
+    build:
+      context: .
+      dockerfile: containers/celery_worker/Dockerfile
+      network: host
+    volumes:
+      - .:/code
+    environment:
+      - CELERY_BROKER_URL=redis://localhost:6379/0
+    command: celery -A mtgsys worker -l info
+    depends_on:
+      app:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - .env.prod
+    network_mode: "host"
+  celery_beat:
+    container_name: celery_beat
+    tty: true
+    build:
+      context: .
+      dockerfile: containers/celery_beat/Dockerfile
+      network: host
+    volumes:
+      - .:/code
+    environment:
+      - CELERY_BROKER_URL=redis://localhost:6379/0
+    command: celery -A mtgsys beat -l info
+    depends_on:
+      app:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - .env.prod
+    network_mode: "host"
+  redis:
+    image: redis:latest
+    restart: always
+    tty: true
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+    env_file:
+      - .env.prod  
+    network_mode: "host"
+
+volumes:
+  static:
+  db_data:

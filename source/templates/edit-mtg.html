@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block title %}Edit-mtg - TerakoyaOnline{% endblock %}
+{% block main %}
+<div id="show-header" {% if element_visible %}style="display:none;"{% endif %}>三 MENU</div>
+<a href="{% url 'home' %}" id="redirect-home">← HOME</a>
+{% if messages %}
+  <div class="messages notification">
+    {% for message in messages %}
+        <div class="notification-title">{{ message.level_tag }}</div>
+        <div class="notification-time">{{ message.extra_tags}}</div>
+        <div class="notification-message">
+            <span class="{{ message.tags }}">{{ message }}</span>
+        </div>
+        <div class="notification-close">閉じる</div>
+    {% endfor %}
+  </div>
+{% endif %}
+<div class="main-container">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-title">編集内容を入力してください。</div>
+        <div class="form-container v-hide-scroll">
+            <div class="card">
+                <input
+                    type="text"
+                    placeholder="会議名を入力してください"
+                    name="mtg_name"
+                    value="{{ selected_meeting.meeting_name }}"
+                    required
+                >
+            </div>
+            <div class="card">
+                <input
+                    type="datetime-local"
+                    name="datetime"
+                    value="{{ selected_meeting.date|date:'Y-m-d\\TH:i' }}"
+                    required
+                >
+            </div>
+            <div class="card">
+                <div class="checkbox">
+                    <input
+                        type="checkbox"
+                        id="is_guest_join-check"
+                        name="is_guest_join"
+                        {% if selected_meeting.guest %}checked{% endif %}
+                    class="toggle-checkbox"
+                >
+                <label for="is_guest_join-check" class="toggle-label"></label>
+                    <span class="toggle-text"></span>
+                </div>
+            </div>
+            <div class="card">
+                <div class="checkbox">
+                    <input
+                        type="checkbox"
+                        id="is_recurrence"
+                        name="is_recurrence"
+                        {% if selected_meeting.is_recurring %}checked{% endif %}
+                        class="toggle-checkbox is-recurrence"
+                    >
+                    <label for="is_recurrence" class="toggle-label"></label>
+                    <span class="toggle-text"></span>
+                </div>
+                <input
+                    type="text"
+                    placeholder="繰り返し日数を入力してください"
+                    id="recurrence-days"
+                    {% if selected_meeting.is_recurring %}
+                        value="{{ selected_meeting.recurrence_days }}"
+                    {% else %}
+                        value=""
+                    {% endif %}
+                    name="recurrence_days"
+                    {% if not selected_meeting.is_recurring %}disabled{% endif %}
+                    required
+                >
+            </div>
+            <div class="card" style="background-color: white; padding: 10px; border-radius: 10px;">
+                <div style="display: flex; flex-direction: row; gap: 10px; align-items: center;">
+                    <div style="font-size: 14px; color: var(--font_secondary_color);">宛先</div>
+                    <div class="participant-list h-hide-scroll">
+                        {% if selected_meeting_participants %}
+                            {% for p in selected_meeting_participants %}
+                                <div class="participant">
+                                    <input type="email" name="participants[]" class="participant-mail" value="{{ p.email }}" readonly>
+                                    <img class="participant-delete" src="../static/img/72.png" alt="会議参加者を削除するクリックアイコンです。" >
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="none-participant" style="color: gray;">example@example.com</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: row; gap: 10px;">
+                    <input
+                        type="email"
+                        id="participant-email"
+                        placeholder="参加者のメールアドレス"
+                        name="participant-email"
+                    >
+                    <button type="button" class="button" id="add-participant">参加者を登録</button>
+                    <button type="button" class="button" id="uploadCSVButton">宛先をまとめて追加する</button>
+                </div>
+                <div class="csv-error"></div>
+                <input type="file" id="emailCSV_input" accept=".csv" />
+                <div style="border-top: 1px solid #e0e0e0;"></div>
+                <div style="display: flex; flex-direction: row; gap: 10px;">
+                    <div style="font-size: 14px; color: var(--font_secondary_color);">件名</div>
+                    <input type="text" name="mail_title" value="{{ selected_meeting.mail_title }}" style="padding: 0; border: none; outline: none; width: 100%;">
+                </div>
+                <div style="border-top: 1px solid #e0e0e0;"></div>
+                <textarea name="mail_text" style="border: none; outline: none; width: 100%; max-width: 100%;">{{ selected_meeting.mail_text }}</textarea>
+            </div>
+            <input
+                type="text"
+                name="meeting_id"
+                value="{{ selected_meeting.meeting_id }}"
+                style="display:none;"
+            >
+        </div>
+        <div class="form-action">
+            <a href="{% url 'home' %}" class="cancel-btn">キャンセル</a>
+            <button type="submit" class="join-btn">適用</button>
+        </div>
+    </form>
+</div>
+{% endblock%}

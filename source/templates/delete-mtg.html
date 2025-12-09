@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Create-mtg - TerakoyaOnline{% endblock %}
+{% block main %}
+<div id="show-header" {% if element_visible %}style="display:none;"{% endif %}>三 MENU</div>
+<a href="{% url 'home' %}" id="redirect-home">← HOME</a>
+{% if messages %}
+  <div class="messages notification">
+    {% for message in messages %}
+        <div class="notification-title">{{ message.level_tag }}</div>
+        <div class="notification-time">{{ message.extra_tags}}</div>
+        <div class="notification-message">
+            <span class="{{ message.tags }}">{{ message }}</span>
+        </div>
+        <div class="notification-close">閉じる</div>
+    {% endfor %}
+  </div>
+{% endif %}
+<div class="main-container">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-title">削除する内容を確認してください</div>
+        <div class="form-container">
+            <span>会議名： {{  selected_meeting.meeting_name }}</span>
+            <span>開催日時： {{  selected_meeting.date }}</span>
+            <span>
+                繰り返し： 
+                {% if selected_meeting.is_recurring %}
+                    あり
+                {% else %}
+                    なし
+                {% endif %}
+            </span>
+            {% if selected_meeting.is_recurring %}
+                <span>
+                    繰り返し日数 {{  selected_meeting.recurrence_days }}
+                </span>
+            {% endif %}
+            <span>
+                ゲスト参加： 
+                {% if selected_meeting.guest %}
+                    参加可能
+                {% else %}
+                    参加不可
+                {% endif %}
+            </span>
+            <span>
+                {% if selected_meeting_participants %}
+                    参加者メールアドレス：<br>
+                    {% for p in selected_meeting_participants %}
+                        <span>{{ p.email }}</span><br>
+                    {% endfor %}
+                {% else %}
+                    参加者がいません。<br>
+                {% endif %}
+            </span>
+            <input type="text" name="meeting_id" value="{{ selected_meeting.meeting_id }}" style="display:none;">
+        </div>
+        <div class="form-action">
+            <a href="{% url 'home' %}" class="cancel-btn">キャンセル</a>
+            <button type="submit" class="join-btn">削除</button>
+        </div>
+    </form>
+</div>
+{% endblock%}

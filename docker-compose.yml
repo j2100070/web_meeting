@@ -1,0 +1,122 @@
+
+services:
+  db:
+    container_name: mysql
+    build:
+      context: .
+      dockerfile: containers/mysql/Dockerfile
+    platform: linux/x86_64
+    volumes:
+      - db_data:/var/lib/mysql
+    # コンテナ内の環境変数を.env.prodを使って設定
+    env_file:
+      - .env.prod
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u$$MYSQL_USER -p$$MYSQL_PASSWORD
+      interval: 1h
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - webnet   
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: containers/django/Dockerfile
+    volumes:
+      - .:/code
+      - ./source/static:/static
+    # 8000番ポートをNginx側が接続できるよう開く
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+      - '8080:8080'
+    tty: true    
+    command: sh -c "/code/entrypoint.sh"
+    # コンテナ内の環境変数を.env.prodを使って設定
+    env_file:
+      - .env.prod
+    depends_on:
+      redis:
+          condition: service_healthy
+      db:
+          condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl --location http://localhost:8000/login/?next=/ || exit 1"]
+      timeout: 10s
+      retries: 1  # 1回のみ試行
+      interval: 1h  # 追加の試行を無効化
+      start_period: 20s # 20秒後に最初のヘルスチェックを実行      
+    networks:
+      - webnet  
+
+  celery_worker:
+      container_name: celery_worker
+      tty: true
+      build:
+        context: .
+        dockerfile: containers/celery_worker/Dockerfile
+
+      volumes:
+        - .:/code  
+      environment:
+        - CELERY_BROKER_URL=redis://redis:6379/0
+      command: celery -A mtgsys worker -l info
+      env_file:
+      - .env.prod
+      depends_on:    
+        app:
+          condition: service_healthy
+        redis:
+          condition: service_healthy
+      networks:
+        - webnet
+
+  celery_beat:
+        container_name: celery_beat
+        tty: true
+        build:
+          context: .
+          dockerfile: containers/celery_beat/Dockerfile
+
+        volumes:
+          - .:/code  
+        environment:
+          - CELERY_BROKER_URL=redis://redis:6379/0
+        command: celery -A mtgsys beat -l info
+        env_file:
+        - .env.prod
+        depends_on:    
+          app:
+            condition: service_healthy
+          redis:
+            condition: service_healthy
+        networks:
+          - webnet
+
+  redis:
+    image: redis:latest
+    restart: always
+    tty: true
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+    networks:
+      - webnet        
+
+  
+
+  
+volumes:
+  db_data:
+  static:
+
+
+networks:
+  webnet:
+
+

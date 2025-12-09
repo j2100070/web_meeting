@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}profile - TerakoyaOnline{% endblock %}
+{% block main %}
+<div id="show-header" {% if element_visible %}style="display:none;"{% endif %}>三 MENU</div>
+<a href="{% url 'home' %}" id="redirect-home">← HOME</a>
+{% if messages %}
+  <div class="messages notification">
+    {% for message in messages %}
+        <div class="notification-title">{{ message.level_tag }}</div>
+        <div class="notification-time">{{ message.extra_tags}}</div>
+        <div class="notification-message">
+            <span class="{{ message.tags }}">{{ message }}</span>
+        </div>
+        <div class="notification-close">閉じる</div>
+    {% endfor %}
+  </div>
+{% endif %}
+<div class="main-container">
+    <div class="profile-title">ユーザー情報</div>
+    <div class="profile-container">
+        <p>ユーザー名: {{ user.username }}</p>
+        <p>メールアドレス: {{ user.email }}</p>
+        <a class="account-edit-button" href="{% url 'username_change' %}" style="color: blue;">ユーザー名を変更する</a>
+        <a class="account-edit-button" href="{% url 'password_change' %}" style="color: blue;">パスワードを変更する</a>
+        <a class="account-edit-button" href="{% url 'signup' %}" style="color: blue;">新規アカウントを作成する</a>
+    </div>
+</div>
+{% endblock%}

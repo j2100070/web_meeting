@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - TerakoyaOnline{% endblock %}
+
+{% block main %}
+<div class="main-container">
+    <div class="login">
+        <form method="post" class="authorize-form">
+            {% csrf_token %}
+            <div class="form-title">ログイン</div> 
+            <div class="form-container">
+                {{ form.as_p }}
+            </div> 
+            <div class="form-action">
+                <button type="submit" class="join-btn">ログイン</button>
+            </div>
+            <p style="white-space: nowrap;">アカウントを持っていませんか？ <a href="{% url 'signup' %}" style="color: blue;">サインアップ</a></p>
+            <p style="white-space: nowrap;">パスワードを忘れた場合は <a href="{% url 'password_reset' %}" style="color: blue;">こちら</a></p>
+        </form>
+    </div>
+</div>
+{% endblock %}

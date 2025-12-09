@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block title %}Design - TerakoyaOnline{% endblock %}
+{% block main %}
+<div id="show-header" {% if element_visible %}style="display:none;"{% endif %}>三 MENU</div>
+{% if messages %}
+    <div class="messages notification">
+    {% for message in messages %}
+        <div class="notification-title">{{ message.level_tag }}</div>
+        <div class="notification-time">{{ message.extra_tags}}</div>
+        <div class="notification-message">
+            <span class="{{ message.tags }}">{{ message }}</span>
+        </div>
+        <div class="notification-close">閉じる</div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<div class="main-container">
+    <div class="mtg-container">
+        <div class="group-title-container">
+            <div class="group-title">本日開催の会議</div>
+        </div>
+        <div class="group-container h-hide-scroll">
+            {% if today_meetings %}
+                {% for meeting in today_meetings %}
+                <div class="mtg" data-join-url="{% url 'join-mtg' %}?meeting_id={{ meeting.id }}">
+                    <div class="mtg-content">
+                        <div class="mtg-title">{{ meeting.meeting_name }}</div>
+                        <div class="mtg-operation">
+                            {% if meeting.creator == user %}
+                                <img class="mtg-edit" data-edit-url="{% url 'edit-mtg' %}?meeting_id={{ meeting.id }}" src="../static/img/70.png" alt="mtg編集ページに遷移するクリックアイコンです。" >
+                                <img class="mtg-delete" data-delete-url="{% url 'page-delete-mtg' %}?meeting_id={{ meeting.id }}" src="../static/img/72.png" alt="mtg編集ページに遷移するクリックアイコンです。" >
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="mtg-host">ホスト:&nbsp;&nbsp;&nbsp;{{ meeting.creator }}</div>
+                    <div class="mtg-time">開始時間:&nbsp;&nbsp;&nbsp;{{ meeting.date|date:"H:i" }}</div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>登録された会議はありません。</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="mtg-container">
+        <div class="group-title-container">
+            <div class="group-title">自身がホストの会議</div>
+        </div>
+        <div class="group-container h-hide-scroll">
+            {% if host_meetings %}
+                {% for meeting in host_meetings %}
+                    <div class="mtg" data-join-url="{% url 'join-mtg' %}?meeting_id={{ meeting.id }}">
+                        <div class="mtg-content">
+                            <div class="mtg-title">{{ meeting.meeting_name }}</div>
+                            <div class="mtg-operation">
+                                <img class="mtg-edit" data-edit-url="{% url 'edit-mtg' %}?meeting_id={{ meeting.id }}" src="../static/img/70.png" alt="mtg編集ページに遷移するクリックアイコンです。" >
+                                <img class="mtg-delete" data-delete-url="{% url 'page-delete-mtg' %}?meeting_id={{ meeting.id }}" src="../static/img/72.png" alt="mtg編集ページに遷移するクリックアイコンです。" >
+                            </div>
+                        </div>
+                        <div class="mtg-host">ホスト:&nbsp;&nbsp;&nbsp;{{ meeting.creator }}</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>登録された会議はありません。</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="mtg-container">
+        <div class="group-title-container">
+            <div class="group-title">参加会議一覧</div>
+        </div>
+        <div class="group-container h-hide-scroll">
+            {% if meetings %}
+                {% for meeting in meetings %}
+                    <div class="mtg" data-join-url="{% url 'join-mtg' %}?meeting_id={{ meeting.id }}">
+                        <div class="mtg-content">
+                            <div class="mtg-title">{{ meeting.meeting_name }}</div>
+                            <div class="mtg-operation">
+                                {% if meeting.creator == user %}
+                                    <img class="mtg-edit" data-edit-url="{% url 'edit-mtg' %}?meeting_id={{ meeting.id }}" src="../static/img/70.png" alt="mtg編集ページに遷移するクリックアイコンです。" >
+                                    <img class="mtg-delete" data-delete-url="{% url 'page-delete-mtg' %}?meeting_id={{ meeting.id }}" src="../static/img/72.png" alt="mtg編集ページに遷移するクリックアイコンです。" >
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="mtg-host">ホスト:&nbsp;&nbsp;&nbsp;{{ meeting.creator }}</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>登録された会議はありません。</p>
+            {% endif %}
+        </div>
+    </div>
+    <div id="create-mtg-button">
+        <a href="{% url 'create-mtg' %}" id="create-mtg-button-inner">会議室作成&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="plus">＋</span></a>
+    </div>
+</div>
+{% endblock%}

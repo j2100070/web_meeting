@@ -1,0 +1,145 @@
+/* ボタンの共通スタイル */
+.button {
+    border-radius: var(--border-radius-20);
+    padding: 0px 10px;
+
+    background-color: var(--secondary_color);
+    border: 2px solid var(--base_color);
+    box-sizing: border-box;
+    color: var(--font_secondary_color);
+}
+button:hover {
+    cursor: pointer;
+    
+    border: 2px solid var(--hover_line_color);
+    color: var(--font_primaly_color);
+}
+
+/* addEmailボタンのスタイル */
+.addEmail_button,
+.upload-csv-button,
+#box-create-button {
+  color: var(--delete-button-color);
+  background-color: var(--delete-button-background);
+
+  box-sizing: border-box;
+  border: 2px solid var(--delete-button-border);
+
+  width: fit-content;
+  
+  padding: 10px 15px;
+  font-size: medium;
+  opacity: 1;
+}
+.addEmail_button:hover,
+.upload-csv-button:hover {
+  cursor: pointer;
+  border: 2px solid var(--delete-button-border-hover);
+}
+#box-create-button:hover {
+  cursor: pointer;
+  border: 2px solid var(--delete-button-border-hover);
+}
+
+/* 削除ボタンのスタイル */
+.delete_button {
+    color: var(--delete-button-color);
+    background-color: var(--delete-button-background);
+    border: 2px solid var(--delete-button-border);
+    padding: 10px 15px;
+    font-size: small;
+    opacity: 1;
+  
+    box-sizing: border-box;
+    width: max-content;
+    white-space: nowrap;
+}
+  .delete_button:hover {
+    cursor: pointer;
+    border: 2px solid var(--delete-button-border-hover);
+}
+
+/* 送信ボタンのスタイル */
+.popup-submit {
+    color: var(--submit-button-color);
+    background-color: var(--submit-button-background);
+    opacity: 1;
+
+    box-sizing: border-box;
+    border: 2px solid var(--submit-button-border);
+    padding: 10px 15px;
+
+    font-size: medium;
+}
+.popup-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.popup-submit:hover {
+    cursor: pointer;
+    border: 2px solid var(--submit-button-border-hover);
+}
+.popup-submit:disabled:hover {
+    border: 2px solid var(--submit-button-border);
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* popup閉じるボタンのスタイル */
+.popup-close {
+    color: var(--delete-button-color);
+    background-color: var(--delete-button-background);
+    border: 2px solid var(--delete-button-border);
+    padding: 10px 15px;
+    font-size: medium;
+}
+.popup-close:hover {
+    cursor: pointer;
+    border: 2px solid var(--delete-button-border-hover);
+}
+
+/* アイコンの削除/編集ボタンのスタイル */
+.edit-icon-button,
+.delete-nameIcon-button,
+.delete-guestIcon-button {
+    background-color: var(--hover-color);
+    border: 2px solid var(--hover-color);
+    padding: 5px 10px;
+    display: inline-block;
+}
+.edit-icon-button:hover,
+.delete-nameIcon-button:hover,
+.delete-guestIcon-button:hover {
+    border: 2px solid var(--header-button-border-hover);
+}
+
+
+/* テーブルのボタンのスタイル */
+.table-operate-button {
+    background-color: var(--hover-color);
+    border: 2px solid var(--hover-color);
+    padding: 5px 10px;
+}
+.table-operate-button:hover {
+    border: 2px solid var(--header-button-border-hover);
+}
+.table-download-button {
+    background-color: var(--hover-color);
+    border: 2px solid var(--header-button-border-hover);
+    padding: 5px 10px;
+}
+.table-sort-button {
+    background-color: var(--hover-color);
+    border: 2px solid var(--hover-color);
+    padding: 2px 5px;
+    font-size: 10px;
+}
+.table-sort-button:hover {
+    border: 2px solid var(--header-button-border-hover);
+}
+
+
+/* マニュアルページの画像 */
+.manual_img {
+    height: 180px;
+}

@@ -1,0 +1,482 @@
+@import "component/container.css";
+@import "component/form.css";
+@import "component/button.css";
+@import "component/registration.css";
+
+
+:root {
+  --font_primaly_color: #000000;
+  --font_secondary_color: #444444;
+  --font_third_color: #bbbbbb;
+
+  --base_color: #e9e5e5;
+  --main_color: #bad4d8;
+  --secondary_color: #f4f4f4;
+  --third_color: #b2b2b2;
+  --hover_line_color: #444444;
+  --hover_line_color2: #bbbbbb;
+  --icon_color: #444444;
+  --hover_icon_color: #000000;
+  --hover_header_color: #d5ecef;
+
+  --font_size: 16px;
+  --font_size_large: 20px;
+  --font_size_title: 32px;
+  --radius: 5px;
+
+  --border-radius-20: 20px;
+}
+
+* {
+  color: var(--font_primaly_color);
+  font-family: "TT Norms", Arial, sans-serif;
+}
+html {
+  font-size: var(--font_size);
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+
+  background-color: var(--base_color);
+}
+a {
+  text-decoration: none;
+}
+p {
+  margin: 0;
+  padding: 0;
+}
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.toggle-checkbox {
+  display: none;
+}
+.toggle-label {
+  width: 50px;
+  height: 25px;
+  background-color: #ccc;
+  border-radius: 25px;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+.toggle-label::before {
+  content: "";
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  transition: left 0.3s ease-in-out;
+}
+.toggle-checkbox:checked + .toggle-label {
+  background-color: #4CAF50;
+}
+.toggle-checkbox:checked + .toggle-label::before {
+  left: 25px;
+}
+
+
+
+.v-hide-scroll {
+  overflow-y: scroll;
+  white-space: nowrap;
+}
+.v-hide-scroll::-webkit-scrollbar {
+  display: block;
+  width: 6px;
+}
+.v-hide-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--base_color);
+}
+.v-can-scroll {
+  overflow-y: auto;
+  white-space: nowrap;
+}
+.v-can-scroll::-webkit-scrollbar {
+  display: block;
+  width: 6px;
+}
+.v-can-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--third_color);
+  border-radius: 4px;
+}
+.h-hide-scroll {
+  overflow-x: scroll;
+  white-space: nowrap;
+}
+.h-hide-scroll::-webkit-scrollbar {
+  display: block;
+  height: 6px;
+}
+.h-hide-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--base_color);
+}
+.h-can-scroll {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.h-can-scroll::-webkit-scrollbar {
+  display: block;
+  height: 6px;
+}
+.h-can-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--third_color);
+  border-radius: 4px;
+}
+
+
+
+header {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--main_color);
+  padding: 18px 13px 18px 40px;
+
+  flex: 1;
+  height: calc(100% - 36px);
+  gap: 40px;
+}
+#header-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+#header-top #title {
+  font-size: var(--font_size_title);
+  font-weight: bold;
+  padding-top: 50px;
+
+  display: flex;
+  flex-direction: column;
+}
+#header-top #title #title-lower {
+  font-size: 26px;
+  font-weight: lighter;
+  padding-left: 8px;
+}
+#header-top #toggle-header-wrapper #hide-header {
+  width: 20px;
+}
+#header-top #toggle-header-wrapper #hide-header:hover {
+  cursor: pointer;
+  content: url("../img/53.png");
+}
+nav {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  min-width: max-content;
+  padding-left: 8px;
+}
+nav a {
+  text-decoration: none;
+  white-space: nowrap;
+  width: max-content;
+}
+nav a:hover {
+  font-weight: bold;
+}
+#about-team {
+  text-align: right;
+  margin-top: auto;
+  white-space: nowrap;
+}
+
+
+
+main {
+  position: relative;
+  flex: 5;
+  height: 100%;
+}
+main #show-header {
+  width: 180px;
+  padding: 10px 30px;
+  box-sizing: border-box;
+  border-bottom-right-radius: 10px;
+  background-color: var(--main_color);
+  color: white;
+  font-size: var(--font_size_large);
+  font-weight: bold;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  transition: padding 0.1s ease-in-out;
+}
+main #show-header:hover {
+  background-color: var(--hover_header_color);
+  cursor: pointer;
+}
+main #redirect-home {
+  width: 180px;
+  padding: 10px 30px;
+  box-sizing: border-box;
+
+  border-left: 4px solid var(--main_color);
+  border-bottom: 4px solid var(--main_color);
+  border-right: 4px solid var(--main_color);
+  border-radius: 0 0 10px 10px;
+
+  color: var(--main_color);
+  font-size: var(--font_size_large);
+  font-weight: bold;
+
+  position: absolute;
+  top: 0;
+  right: 50px;
+}
+main #redirect-home:hover {
+  background-color: var(--main_color);
+  color: white;
+}
+main .notification {
+  width: 360px;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  border-radius: 30px;
+  background-color: var(--main_color);
+  position: absolute;
+  top: 100px;
+  right: 50px;
+}
+main .notification .notification-title {
+  font-weight: bold;
+}
+main .notification .notification-time {
+  color: var(--font_secondary_color);
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
+main .notification .notification-message {
+  padding: 10px 10px 35px 20px;
+}
+main .notification .notification-close {
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+  cursor: pointer;
+  background-color: var(--secondary_color);
+  font-size: 10px;
+  border-radius: 20px;
+  padding: 5px 10px;
+}
+main .main-container {
+  width: calc(100% - 100px);
+  height: calc(100% - 130px);
+  padding: 80px 50px 50px 50px;
+
+  display: flex;
+  flex-direction: column;
+}
+main .main-container .mtg-container {
+  flex: 1;
+  text-align: center;
+
+  width: 100%;
+  max-width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+main .main-container .mtg-container .group-title-container {
+  height: 38px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10px;
+}
+main .main-container .mtg-container .group-title-container .group-title {
+  font-size: var(--font_size_large);
+}
+main .main-container .mtg-container .group-container {
+  max-width: 0;
+  padding-bottom: 5px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 15px;
+  min-width: 0;
+}
+main .main-container .mtg-container .group-container .mtg {
+  border: 2px solid var(--base_color);
+  width: fit-content;
+  height: fit-content;
+  border-radius: 25px;
+  padding: 10px 35px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  text-align: left;
+  text-decoration: none;
+
+  background-color: var(--secondary_color);
+  cursor: pointer;
+}
+main .main-container .mtg-container .group-container .mtg:hover {
+  border: 2px solid var(--hover_line_color);
+}
+main .main-container .mtg-container .group-container .mtg .mtg-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 50px;
+}
+main .main-container .mtg-container .group-container .mtg:hover .mtg-content .mtg-title {
+  color: var(--font_primaly_color);
+}
+main .main-container .mtg-container .group-container .mtg:hover .mtg-host,
+main .main-container .mtg-container .group-container .mtg:hover .mtg-time {
+  color: var(--font_secondary_color);
+}
+main .main-container .mtg-container .group-container .mtg:hover .mtg-content .mtg-operation .mtg-edit,
+main .main-container .mtg-container .group-container .mtg:hover .mtg-content .mtg-operation .mtg-delete {
+  opacity: 1;
+}
+main .main-container .mtg-container .group-container .mtg:has(.mtg-edit:hover),
+main .main-container .mtg-container .group-container .mtg:has(.mtg-delete:hover) {
+  border: 2px solid var(--hover_line_color2);
+}
+main .main-container .mtg-container .group-container .mtg:has(.mtg-edit:hover)  .mtg-content .mtg-title,
+main .main-container .mtg-container .group-container .mtg:has(.mtg-delete:hover)  .mtg-content .mtg-title{
+  color: var(--font_secondary_color);
+}
+main .main-container .mtg-container .group-container .mtg:has(.mtg-edit:hover) .mtg-host,
+main .main-container .mtg-container .group-container .mtg:has(.mtg-edit:hover) .mtg-time,
+main .main-container .mtg-container .group-container .mtg:has(.mtg-delete:hover) .mtg-host,
+main .main-container .mtg-container .group-container .mtg:has(.mtg-delete:hover) .mtg-time {
+  color: var(--font_third_color);
+}
+main .main-container .mtg-container .group-container .mtg  .mtg-content .mtg-title {
+  font-weight: bold;
+  color: var(--font_secondary_color);
+}
+main .main-container .mtg-container .group-container .mtg .mtg-host,
+main .main-container .mtg-container .group-container .mtg .mtg-time {
+  color: var(--font_third_color);
+}
+main .main-container .mtg-container .group-container .mtg .mtg-content .mtg-operation {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 10px;
+  height: 16px;
+}
+main .main-container .mtg-container .group-container .mtg .mtg-content .mtg-operation .mtg-edit,
+main .main-container .mtg-container .group-container .mtg .mtg-content .mtg-operation .mtg-delete {
+  width: 16px;
+  opacity: 0;
+}
+main .main-container .mtg-container .group-container .mtg .mtg-content .mtg-operation .mtg-edit:hover {
+  cursor: pointer;
+  content: url("../img/71.png");
+  opacity: 1;
+}
+main .main-container .mtg-container .group-container .mtg .mtg-content .mtg-operation .mtg-delete:hover {
+  cursor: pointer;
+  content: url("../img/73.png");
+  opacity: 1;
+}
+main #create-mtg-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+main #create-mtg-button #create-mtg-button-inner {
+  background-color: var(--secondary_color);
+  border: 2px solid var(--base_color);
+  box-sizing: border-box;
+  
+  cursor: pointer;
+  padding: 15px 35px;
+  border-radius: 40px;
+  font-weight: bold;
+  color: var(--font_secondary_color);
+}
+main #create-mtg-button #create-mtg-button-inner #plus {
+  color: var(--font_third_color);
+}
+main #create-mtg-button #create-mtg-button-inner:hover {
+  border: 2px solid var(--hover_line_color);
+  color: var(--font_primaly_color);
+}
+main #create-mtg-button #create-mtg-button-inner:hover #plus {
+  color: var(--font_primaly_color);
+}
+
+
+main .main-container form{
+  width: 60%;
+  max-width: 60%;
+  height: 100%;
+  padding-left: 50px;
+  
+  display: flex;
+  flex-direction: column;
+}
+main .main-container .login {
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+}
+main .main-container .login .login-images {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+
+  padding-top: 50px;
+}
+main .main-container .login .login-images .login-logo {
+  width: 60%;
+}
+main .main-container .login .login-images .login-pic {
+  width: 90%;
+}
+main .main-container .login .authorize-form {
+  width: min-content;
+}
+main .main-container form .form-title {
+  font-size: var(--font_size_large);
+}
+
+
+main .main-container .profile-title {
+  font-size: var(--font_size_large);
+}
+main .main-container .profile-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  padding: 20px;
+}
+
+#emailCSV_input {
+  display: none;
+}

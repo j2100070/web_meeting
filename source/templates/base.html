@@ -1,0 +1,52 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- faviconを設定 -->
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+
+    <title>Terakoya Online</title>
+    <meta name="description" content="会議ツールです。">
+    <meta name="author" content="KinokoDev">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <link rel="stylesheet" href="{% static 'css/main.css'%}" />
+</head>
+
+<body>
+    <header id="header" {% if not element_visible %}style="display: none;"{% endif %}>
+        <div id="header-top">
+            <a href="{% url 'home' %}" id="title">
+                <span id="title-upper">Terakoya</span>
+                <span id="title-lower">Online</span>
+            </a>
+            <div id="toggle-header-wrapper">
+                <img id="hide-header" src="../static/img/52.png" alt="ヘッダー最小化のクリック用アイコンです。">
+            </div>
+        </div>
+        <nav>
+            <a href="{% url 'home' %}">ホーム</a>
+            <a href="{% url 'create-mtg' %}">会議室作成</a>
+            <a href="{% url 'profile' %}">ユーザー情報</a>
+            <a href="{% url 'logout' %}"> ログアウト</a>
+        </nav>
+    </header>
+    <main>
+        {% block main %}
+        {% endblock %}
+    </main>
+    <script src="{% static 'javascript/jquery-3.7.1.js' %}" ></script>
+    <script src="{% static 'javascript/papaparse.js' %}"></script>
+    <script src="{% static 'javascript/common.js' %}"></script>
+    <script src="{% static 'javascript/header.js' %}"></script>
+    <script src="{% static 'javascript/mtg.js' %}"></script>
+    <script src="{% static 'javascript/form.js' %}"></script>
+    <script src="{% static 'javascript/notification.js' %}"></script>
+    <script src="{% static 'javascript/csv.js' %}"></script>
+</body>
+
+</html>

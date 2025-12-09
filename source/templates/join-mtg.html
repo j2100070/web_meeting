@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title %}Join-mtg - TerakoyaOnline{% endblock %}
+{% block main %}
+<div id="show-header" {% if element_visible %}style="display:none;"{% endif %}>三 MENU</div>
+<a href="{% url 'home' %}" id="redirect-home">← HOME</a>
+{% if messages %}
+  <div class="messages notification">
+    {% for message in messages %}
+        <div class="notification-title">{{ message.level_tag }}</div>
+        <div class="notification-time">{{ message.extra_tags}}</div>
+        <div class="notification-message">
+            <span class="{{ message.tags }}">{{ message }}</span>
+        </div>
+        <div class="notification-close">閉じる</div>
+    {% endfor %}
+  </div>
+{% endif %}
+<div class="main-container">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-title">{{  selected_meeting.meeting_name }}</div>
+        <div class="form-container">
+            <div class="card">
+                <span>会議名： {{  selected_meeting.meeting_name }}</span>
+            </div>
+            <div class="card">
+                <span>開催日時： {{  selected_meeting.date }}</span>
+            </div>
+            <div class="card">
+                <span>
+                    {% if selected_meeting.is_recurring %}
+                        繰り返し： あり
+                    {% else %}
+                        繰り返し： なし
+                    {% endif %}
+                </span>
+            </div>
+            <div class="card">
+                {% if selected_meeting.is_recurring %}
+                    <span>
+                        繰り返し日数 {{  selected_meeting.recurrence_days }}
+                    </span>
+                {% endif %}
+            </div>
+            <div class="card">
+                <span>
+                    ゲスト参加： 
+                    {% if selected_meeting.guest_join %}
+                        参加可能
+                    {% else %}
+                        参加不可
+                    {% endif %}
+                </span>
+            </div>
+            <div class="card">
+                <span>
+                    参加者メールアドレス：<br>
+                    {% if selected_meeting_participants %}
+                        {% for p in selected_meeting_participants %}
+                            <span>{{ p.email }}</span><br>
+                        {% endfor %}
+                    {% else %}
+                        参加者がいません。
+                    {% endif %}
+                </span>
+            </div>
+            {% if user == selected_meeting.creator %}
+                <div class="card">
+                    <p>送信したメール：</p>
+                    <p>{{ selected_meeting.mail_text|linebreaks }}</p>
+                </div>
+            {% endif %}
+            <input type="text" name="meeting_id" value="{{ selected_meeting.meeting_id }}" style="display:none;">
+            <input type="text" name="user_name" value="{{ username }}" style="display:none;">
+            <input type="text" name="pw" value="{{ selected_meeting.attendee_pw }}" style="display:none;">
+        </div>
+        <div class="bottom-box">
+            {% if error %}
+                <div class="form-error">
+                    <span>15分前まで利用できません。ご注意ください！</span>
+                </div>
+            {% endif %}
+            <div class="form-action">
+                <div class="cancel-join-btn join-btn">キャンセル</div>
+                <button
+                    type="submit"
+                    class="join-btn"
+                    id="join-mtg-btn"
+                    {% if meeting_info == "FAILED" %}
+                        disabled
+                    {% endif %}
+                    {% if error %}
+                        disabled
+                    {% endif %}
+                >
+                    参加
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock%}
